@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P'MAX - Blockchain Audit Trail</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #020617; color: #f1f5f9; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-xl font-bold tracking-wide text-white">P'MAX <span class="text-xs font-normal text-slate-400">Blockchain Audit Trail (PoA)</span></h1>
+        <a href="dashboard.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded transition border border-slate-700">Back to Dashboard</a>
+    </header>
+    <main class="flex-1 p-6 max-w-7xl mx-auto w-full space-y-6">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg flex justify-between items-center">
+            <div>
+                <h2 class="text-lg font-semibold text-slate-200">Ledger Security Status</h2>
+                <p class="text-xs text-slate-400 mt-1">Chain Integrity: <span id="chain-validity-status" class="text-amber-400 font-mono">Connecting...</span></p>
+            </div>
+            <button onclick="loadLedgerData()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-4 py-2 rounded-lg transition cursor-pointer">Refresh Ledger</button>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-300">
+                <thead class="bg-slate-950 text-slate-400 font-medium text-xs uppercase border-b border-slate-800">
+                    <tr>
+                        <th class="py-3 px-4">Index</th>
+                        <th class="py-3 px-4">Timestamp</th>
+                        <th class="py-3 px-4">Data Payload</th>
+                        <th class="py-3 px-4">Previous Hash</th>
+                        <th class="py-3 px-4 text-right">Block Hash</th>
+                    </tr>
+                </thead>
+                <tbody id="full-ledger-table" class="divide-y divide-slate-800 font-mono text-xs">
+                    <tr>
+                        <td colspan="5" class="py-4 text-center text-slate-500">Connecting to Python Backend API...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        // ดึงข้อมูลจริงจาก Python Backend API โดยตรง (ไม่มีการจำลองข้อมูลในหน้าเว็บ)
+        async function loadLedgerData() {
+            const tbody = document.getElementById('full-ledger-table');
+            const statusEl = document.getElementById('chain-validity-status');
+            
+            try {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 animate-pulse">Fetching ledger data from Python backend...</td></tr>`;
+                
+                const response = await fetch('http://127.0.0.1:8000/api/v1/blockchain/chain');
+                if (!response.ok) throw new Error('Failed to fetch blockchain data from server');
+                
+                const result = await response.json();
+                
+                // ตรวจสอบสถานะความถูกต้องของเชนจาก Backend
+                if (result.is_valid) {
+                    statusEl.innerText = 'VERIFIED & SECURE';
+                    statusEl.className = 'text-emerald-400 font-mono';
+                } else {
+                    statusEl.innerText = 'COMPROMISED';
+                    statusEl.className = 'text-red-400 font-mono';
+                }
+                
+                tbody.innerHTML = '';
+                
+                if (!result.chain || result.chain.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-500">No blocks recorded in the ledger yet.</td></tr>`;
+                    return;
+                }
+
+                result.chain.forEach(block => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-slate-800/50 transition';
+                    row.innerHTML = `
+                        <td class="py-3 px-4 text-emerald-400 font-bold">#${block.index}</td>
+                        <td class="py-3 px-4">${new Date(block.timestamp * 1000).toLocaleString()}</td>
+                        <td class="py-3 px-4 text-slate-200 max-w-xs truncate">${JSON.stringify(block.data)}</td>
+                        <td class="py-3 px-4 text-slate-500 truncate max-w-[120px]">${block.previous_hash}</td>
+                        <td class="py-3 px-4 text-right text-emerald-400 truncate max-w-[120px]">${block.hash}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (err) {
+                statusEl.innerText = 'OFFLINE / DISCONNECTED';
+                statusEl.className = 'text-red-400 font-mono';
+                tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-red-400">Failed to connect to Python backend server at port 8000. Please ensure main.py is running.</td></tr>`;
+            }
+        }
+
+        // โหลดข้อมูลอัตโนมัติเมื่อเปิดหน้าเว็บ
+        loadLedgerData();
+    </script>
+</body>
+</html>

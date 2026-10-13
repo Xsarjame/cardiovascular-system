@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P'MAX - Production Control Center</title>
+    <!-- Google Fonts: Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS v4 Standalone CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js for Real-time PCG Waveform & Frank-Starling Curve -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-['Prompt']">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-3">
+            <div class="h-3 w-3 bg-red-500 rounded-full transition-colors duration-300" id="connection-indicator"></div>
+            <h1 class="text-xl font-bold tracking-wide text-white">P'MAX <span class="text-xs font-normal text-slate-400">Cardiovascular Monitoring System (Exact Math Pipeline)</span></h1>
+        </div>
+        <div class="flex items-center space-x-4 text-sm">
+            <span class="bg-slate-800 px-3 py-1 rounded-md text-slate-300 border border-slate-700">Location: <span class="text-emerald-400 font-mono" id="header-location">--</span></span>
+            <span class="bg-slate-800 px-3 py-1 rounded-md text-slate-300 border border-slate-700">Time: <span class="text-emerald-400 font-mono" id="header-recorded-time">--</span></span>
+            <span class="text-slate-400 font-mono" id="current-time">--:--:--</span>
+            
+            <!-- Link to Blockchain Audit Trail -->
+            <a href="blockchain.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-emerald-400 px-3 py-1.5 rounded-lg transition border border-slate-700 font-medium">
+                View Blockchain Ledger
+            </a>
+
+            <!-- Bluetooth-like Connect / Disconnect Toggle Button -->
+            <button id="btn-toggle-connection" onclick="toggleConnection()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-medium cursor-pointer shadow-md">
+                Connect Device
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl mx-auto w-full">
+
+        <!-- Left Column: Pipeline State & Delta 35% Tracking -->
+        <div class="lg:col-span-1 space-y-6">
+            <!-- Pipeline Status & Calibration -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <h2 class="text-lg font-semibold text-slate-200 mb-4 border-b border-slate-800 pb-2">Pipeline & Baseline Calibration</h2>
+                <div class="space-y-4 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">System Status</span>
+                        <span class="px-2.5 py-1 bg-slate-800 text-slate-400 text-xs font-medium rounded border border-slate-700 transition-all duration-300" id="pipeline-status">DISCONNECTED</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Calibration Progress</span>
+                        <span class="text-white font-mono text-xs" id="calib-progress">--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Acute Delta Threshold</span>
+                        <span class="text-emerald-400 font-mono text-xs">35.0% (0.35)</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Delta Sys Pct:</span>
+                            <span class="font-mono text-white" id="val-delta-sys">--</span>
+                        </div>
+                        <div class="flex justify-between text-xs">
+                            <span class="text-slate-400">Delta Dia Pct:</span>
+                            <span class="font-mono text-white" id="val-delta-dia">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clinical Indices & Risk Assessment -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <h2 class="text-lg font-semibold text-slate-200 mb-4 border-b border-slate-800 pb-2">Clinical & Hemodynamic Metrics</h2>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Frank-Starling Slope</span>
+                        <span class="text-white font-mono" id="val-fs-slope">--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Risk Score</span>
+                        <span class="text-white font-mono" id="val-risk-score">--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Danger Index</span>
+                        <span class="text-white font-mono" id="val-danger-index">--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Risk Tier</span>
+                        <span class="px-2 py-0.5 bg-slate-800 text-slate-300 text-xs rounded font-mono" id="val-risk-tier">--</span>
+                    </div>
+                    <div class="p-3 rounded-lg bg-red-950/40 border border-red-900/50 mt-3" id="sos-container" style="display: none;">
+                        <p class="text-xs font-bold text-red-400 uppercase tracking-wide">⚠️ SOS Alert Triggered</p>
+                        <p class="text-xs text-red-300 mt-1" id="val-prediction">--</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right / Center Columns: PCG Waveform & Frank-Starling Curve -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- PCG Real-Time Signal Stream -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
+                    <h2 class="text-lg font-semibold text-slate-200">Phonocardiogram (PCG) Gammatone Envelope Stream</h2>
+                    <span class="text-xs font-mono text-slate-400">f_s = 2000 Hz</span>
+                </div>
+                <div class="h-52 relative">
+                    <canvas id="pcgChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Frank-Starling Diagram -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-lg">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
+                    <div>
+                        <h2 class="text-lg font-semibold text-slate-200">Frank-Starling Hemodynamic Diagram</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Analytic Model: λ = 0.05, Y<sub>max</sub> = 100.0 (Eq. 5)</p>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-400" id="fs-coords">F_sys: -- | F_dia: --</span>
+                </div>
+                <div class="h-60 relative">
+                    <canvas id="frankStarlingChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Real-time Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('current-time').innerText = now.toLocaleTimeString('en-US');
+        }, 1000);
+
+        // 1. Chart.js: PCG Waveform Setup
+        const ctxPcg = document.getElementById('pcgChart').getContext('2d');
+        const pcgChart = new Chart(ctxPcg, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 100}, (_, i) => i),
+                datasets: [{
+                    label: 'PCG Envelope Signal',
+                    data: Array(100).fill(null),
+                    borderColor: '#10b981',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.15
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', font: { family: 'Prompt' } } },
+                    y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', font: { family: 'Prompt' } }, min: 0.0, max: 100.0 }
+                },
+                plugins: { legend: { display: false } },
+                animation: false
+            }
+        });
+
+        // 2. Chart.js: Frank-Starling Curve Setup (Eq. 5 Analytic Solution)
+        const ctxFs = document.getElementById('frankStarlingChart').getContext('2d');
+        const yMax = 100.0;
+        const lambda = 0.05;
+        const f0 = 10.0;
+        
+        let curveX = [];
+        let curveY = [];
+        for (let fd = 0; fd <= 80; fd += 2) {
+            let fs = yMax - (yMax - f0) * Math.exp(-lambda * fd);
+            curveX.push(fd);
+            curveY.push(fs);
+        }
+
+        const frankStarlingChart = new Chart(ctxFs, {
+            type: 'line',
+            data: {
+                labels: curveX,
+                datasets: [
+                    {
+                        label: 'Frank-Starling Reference Curve',
+                        data: curveY,
+                        borderColor: '#3b82f6',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        fill: false
+                    },
+                    {
+                        label: 'Current Patient State',
+                        data: [],
+                        backgroundColor: '#10b981',
+                        borderColor: '#059669',
+                        pointRadius: 7,
+                        type: 'scatter'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { 
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'Diastolic Index (F_dia)', color: '#94a3b8' },
+                        grid: { color: '#1e293b' }, ticks: { color: '#64748b' },
+                        min: 0, max: 80
+                    },
+                    y: { 
+                        title: { display: true, text: 'Systolic Work Index (F_sys)', color: '#94a3b8' },
+                        grid: { color: '#1e293b' }, ticks: { color: '#64748b' },
+                        min: 0, max: 105
+                    }
+                },
+                plugins: { legend: { labels: { color: '#cbd5e1', font: { family: 'Prompt', size: 11 } } } },
+                animation: false
+            }
+        });
+
+        // WebSocket Control Variables (Bluetooth-like Connection State)
+        const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const wsEndpoint = wsProtocol + window.location.hostname + ':8000/ws/pipeline';
+        let ws = null;
+        let isConnected = false;
+
+        function toggleConnection() {
+            if (!isConnected) {
+                connectWebSocket();
+            } else {
+                disconnectWebSocket();
+            }
+        }
+
+        function connectWebSocket() {
+            const btn = document.getElementById('btn-toggle-connection');
+            btn.innerText = 'Connecting...';
+            btn.className = "bg-amber-600 text-white text-xs px-3 py-1.5 rounded-lg transition font-medium cursor-pointer shadow-md";
+
+            ws = new WebSocket(wsEndpoint);
+
+            ws.onopen = () => {
+                isConnected = true;
+                const indicator = document.getElementById('connection-indicator');
+                indicator.classList.remove('bg-red-500');
+                indicator.classList.add('bg-emerald-500', 'animate-pulse');
+
+                btn.innerText = 'Disconnect';
+                btn.className = "bg-red-600 hover:bg-red-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-medium cursor-pointer shadow-md";
+
+                const statusEl = document.getElementById('pipeline-status');
+                statusEl.innerText = "CONNECTED";
+                statusEl.className = "px-2.5 py-1 bg-emerald-950 text-emerald-400 text-xs font-medium rounded border border-emerald-800";
+            };
+
+            ws.onmessage = (event) => {
+                if (!isConnected) return;
+                const packet = JSON.parse(event.data);
+                
+                // อัปเดตสถานะ Pipeline จาก Backend จริง
+                if (packet.Status) {
+                    const statusEl = document.getElementById('pipeline-status');
+                    statusEl.innerText = packet.Status;
+                    if (packet.Status === "CALIBRATING") {
+                        statusEl.className = "px-2.5 py-1 bg-amber-950 text-amber-400 text-xs font-medium rounded border border-amber-800";
+                        document.getElementById('calib-progress').innerText = `${(packet.Progress * 100).toFixed(0)}%`;
+                    } else {
+                        statusEl.className = "px-2.5 py-1 bg-emerald-950 text-emerald-400 text-xs font-medium rounded border border-emerald-800";
+                        document.getElementById('calib-progress').innerText = "100% (Calibrated)";
+                    }
+                }
+
+                // อัปเดตข้อมูลเวลาและสถานที่จาก Backend จริง
+                if (packet.Recorded_Time) document.getElementById('header-recorded-time').innerText = packet.Recorded_Time;
+                if (packet.Location) document.getElementById('header-location').innerText = packet.Location;
+
+                // อัปเดตค่า Delta Pct จาก Backend จริง
+                if (packet.Delta_Sys_Pct !== undefined) {
+                    document.getElementById('val-delta-sys').innerText = `${(packet.Delta_Sys_Pct * 100).toFixed(2)}%`;
+                }
+                if (packet.Delta_Dia_Pct !== undefined) {
+                    document.getElementById('val-delta-dia').innerText = `${(packet.Delta_Dia_Pct * 100).toFixed(2)}%`;
+                }
+
+                // อัปเดตดัชนีทางคลินิกและ Frank-Starling Slope จาก Backend จริง
+                if (packet.Frank_Starling_Slope !== undefined) {
+                    document.getElementById('val-fs-slope').innerText = packet.Frank_Starling_Slope.toFixed(3);
+                }
+                if (packet.Risk_Score !== undefined) {
+                    document.getElementById('val-risk-score').innerText = packet.Risk_Score.toFixed(2);
+                }
+                if (packet.Danger_Index !== undefined) {
+                    document.getElementById('val-danger-index').innerText = packet.Danger_Index.toFixed(2);
+                }
+                if (packet.Risk_Tier) {
+                    document.getElementById('val-risk-tier').innerText = packet.Risk_Tier;
+                }
+
+                // อัปเดตพิกัดบนกราฟ Frank-Starling ตามค่า F_sys และ F_dia จริง
+                if (packet.F_sys !== undefined && packet.F_dia !== undefined) {
+                    frankStarlingChart.data.datasets[1].data = [{x: packet.F_dia, y: packet.F_sys}];
+                    frankStarlingChart.update('none');
+                    document.getElementById('fs-coords').innerText = `F_sys: ${packet.F_sys.toFixed(1)} | F_dia: ${packet.F_dia.toFixed(1)}`;
+                }
+
+                // ตรวจสอบสถานะ SOS Trigger และ Prediction จาก Backend จริง
+                if (packet.SOS_Trigger !== undefined) {
+                    const sosContainer = document.getElementById('sos-container');
+                    if (packet.SOS_Trigger) {
+                        sosContainer.style.display = 'block';
+                        document.getElementById('val-prediction').innerText = packet.Prediction;
+                    } else {
+                        sosContainer.style.display = 'none';
+                    }
+                }
+
+                // อัปเดตกราฟ PCG Waveform ตามสัญญาณเสียงดิบจริงที่ประมวลผลผ่าน Backend
+                if (packet.signal_value !== undefined) {
+                    const chartData = pcgChart.data.datasets[0].data;
+                    chartData.shift();
+                    chartData.push(packet.signal_value);
+                    pcgChart.update('none');
+                }
+            };
+
+            ws.onclose = () => {
+                handleDisconnection();
+            };
+
+            ws.onerror = () => {
+                handleDisconnection();
+            };
+        }
+
+        function disconnectWebSocket() {
+            if (ws) {
+                ws.close();
+            }
+            handleDisconnection();
+        }
+
+        function handleDisconnection() {
+            isConnected = false;
+            if (ws) {
+                ws = null;
+            }
+
+            const indicator = document.getElementById('connection-indicator');
+            indicator.classList.remove('bg-emerald-500', 'animate-pulse');
+            indicator.classList.add('bg-red-500');
+
+            const btn = document.getElementById('btn-toggle-connection');
+            btn.innerText = 'Connect Device';
+            btn.className = "bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition font-medium cursor-pointer shadow-md";
+
+            const statusEl = document.getElementById('pipeline-status');
+            statusEl.innerText = "DISCONNECTED";
+            statusEl.className = "px-2.5 py-1 bg-slate-800 text-slate-400 text-xs font-medium rounded border border-slate-700";
+
+            // ล้างค่าบนหน้าจอเมื่อตัดการเชื่อมต่อ
+            document.getElementById('header-location').innerText = '--';
+            document.getElementById('header-recorded-time').innerText = '--';
+            document.getElementById('val-delta-sys').innerText = '--';
+            document.getElementById('val-delta-dia').innerText = '--';
+            document.getElementById('val-fs-slope').innerText = '--';
+            document.getElementById('val-risk-score').innerText = '--';
+            document.getElementById('val-danger-index').innerText = '--';
+            document.getElementById('val-risk-tier').innerText = '--';
+            document.getElementById('fs-coords').innerText = 'F_sys: -- | F_dia: --';
+            document.getElementById('sos-container').style.display = 'none';
+            
+            frankStarlingChart.data.datasets[1].data = [];
+            frankStarlingChart.update('none');
+            
+            pcgChart.data.datasets[0].data = Array(100).fill(null);
+            pcgChart.update('none');
+        }
+    </script>
+</body>
+</html>

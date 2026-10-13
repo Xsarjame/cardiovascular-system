@@ -1,0 +1,227 @@
+[
+    {
+        "index": 1,
+        "timestamp": 1791904732.013531,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Elevated",
+                "SOS_Trigger": false,
+                "F_sys": 96.43364940583706,
+                "F_dia": 81.3252370543778,
+                "Vortex_Efficiency": 0.3610841235145926,
+                "Delta_Sys_Pct": 1.50910463772322,
+                "Delta_Dia_Pct": 1.6565463179722426,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 38.0m",
+                "Source_Audio": "85349_PV.wav"
+            },
+            "location": {
+                "altitude_meters": 38.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "hash": "7dfe1298f6e6b683781560d8501748938f6707fd93fee83d6daae3bfac75a028"
+    },
+    {
+        "index": 2,
+        "timestamp": 1791904732.101528,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 98.7685524225235,
+                "F_dia": 82.50141431689262,
+                "Vortex_Efficiency": 0.4356713810563087,
+                "Delta_Sys_Pct": 3.9668972868668404,
+                "Delta_Dia_Pct": 3.1267678961157763,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 39.0m",
+                "Source_Audio": "9979_AV.wav"
+            },
+            "location": {
+                "altitude_meters": 39.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "7dfe1298f6e6b683781560d8501748938f6707fd93fee83d6daae3bfac75a028",
+        "hash": "63e88c84aec613cc56c9e4fc388dac0ea42682a7d7a8f9eb05ff0d67cb5e9730"
+    },
+    {
+        "index": 3,
+        "timestamp": 1791904732.209495,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 100.3115605711937,
+                "F_dia": 83.83367042839527,
+                "Vortex_Efficiency": 0.47077890142798423,
+                "Delta_Sys_Pct": 5.591116390730205,
+                "Delta_Dia_Pct": 4.792088035494082,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 40.0m",
+                "Source_Audio": "9979_MV.wav"
+            },
+            "location": {
+                "altitude_meters": 40.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "63e88c84aec613cc56c9e4fc388dac0ea42682a7d7a8f9eb05ff0d67cb5e9730",
+        "hash": "3e716b558a9a117e9550c9673a2181409544b043a2a17888260c31ac425b4586"
+    },
+    {
+        "index": 4,
+        "timestamp": 1791904732.297902,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 115.37870556116104,
+                "F_dia": 96.05902917087079,
+                "Vortex_Efficiency": 0.5021967639029026,
+                "Delta_Sys_Pct": 21.451269011748465,
+                "Delta_Dia_Pct": 20.073786463588483,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 41.0m",
+                "Source_Audio": "9979_PV.wav"
+            },
+            "location": {
+                "altitude_meters": 41.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "3e716b558a9a117e9550c9673a2181409544b043a2a17888260c31ac425b4586",
+        "hash": "b4b17a0061e38648f46a345744fc8e0eed816fc656bd341711844f034ae1afbc"
+    },
+    {
+        "index": 5,
+        "timestamp": 1791904732.392226,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 118.95771420001984,
+                "F_dia": 97.41828565001488,
+                "Vortex_Efficiency": 0.6173942855000496,
+                "Delta_Sys_Pct": 25.21864652633667,
+                "Delta_Dia_Pct": 21.7728570625186,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 42.0m",
+                "Source_Audio": "9979_TV.wav"
+            },
+            "location": {
+                "altitude_meters": 42.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "b4b17a0061e38648f46a345744fc8e0eed816fc656bd341711844f034ae1afbc",
+        "hash": "a2d21b71f77e64bfc4ac4656d5d5e1bb083eec7dbda4642181dc9bd047c1e192"
+    },
+    {
+        "index": 6,
+        "timestamp": 1791904732.486706,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 118.20861187577248,
+                "F_dia": 98.53145890682936,
+                "Vortex_Efficiency": 0.5717715296894312,
+                "Delta_Sys_Pct": 24.430117763971026,
+                "Delta_Dia_Pct": 23.164323633536696,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 43.0m",
+                "Source_Audio": "9983_AV.wav"
+            },
+            "location": {
+                "altitude_meters": 43.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "a2d21b71f77e64bfc4ac4656d5d5e1bb083eec7dbda4642181dc9bd047c1e192",
+        "hash": "637b490447b8018399477c640afe9841df395b436d2b5e1abb60e65bd81eb205"
+    },
+    {
+        "index": 7,
+        "timestamp": 1791904732.565751,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 119.51302263140678,
+                "F_dia": 99.68476697355509,
+                "Vortex_Efficiency": 0.6062825565785169,
+                "Delta_Sys_Pct": 25.803181717270302,
+                "Delta_Dia_Pct": 24.605958716943857,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 44.0m",
+                "Source_Audio": "9983_MV.wav"
+            },
+            "location": {
+                "altitude_meters": 44.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "637b490447b8018399477c640afe9841df395b436d2b5e1abb60e65bd81eb205",
+        "hash": "898e9ac9d55c160482bdc5df560f1fd8135035736183fb5054e52c01d8dc050f"
+    },
+    {
+        "index": 8,
+        "timestamp": 1791904732.674338,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 123.20671984553337,
+                "F_dia": 102.63003988415002,
+                "Vortex_Efficiency": 0.6467667996138334,
+                "Delta_Sys_Pct": 29.691284047929866,
+                "Delta_Dia_Pct": 28.287549855187528,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 45.0m",
+                "Source_Audio": "9983_PV.wav"
+            },
+            "location": {
+                "altitude_meters": 45.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "898e9ac9d55c160482bdc5df560f1fd8135035736183fb5054e52c01d8dc050f",
+        "hash": "7f00235b4540f2b415bee7263ae3b7e65c9962100b2561a0d2d77b9dfa33b59a"
+    },
+    {
+        "index": 9,
+        "timestamp": 1791904732.761032,
+        "data": {
+            "clinical_metrics": {
+                "Status": "MONITORING_ACTIVE",
+                "Risk_Tier": "Low",
+                "SOS_Trigger": false,
+                "F_sys": 126.2233492732048,
+                "F_dia": 105.06751195490361,
+                "Vortex_Efficiency": 0.6855583731830119,
+                "Delta_Sys_Pct": 32.86668344547874,
+                "Delta_Dia_Pct": 31.33438994362951,
+                "Recorded_Time": "22:18:52",
+                "Location": "Lat: 13.7456, Lng: 100.5341, Alt: 46.0m",
+                "Source_Audio": "9983_TV.wav"
+            },
+            "location": {
+                "altitude_meters": 46.0,
+                "floor_level": 12
+            }
+        },
+        "previous_hash": "7f00235b4540f2b415bee7263ae3b7e65c9962100b2561a0d2d77b9dfa33b59a",
+        "hash": "28a325c18801651964a56288ae071938ece018533da69e53c76011cc3a23faa1"
+    }
+]

@@ -1,0 +1,36 @@
+{
+    "patient_id": "HN-998822-2026",
+    "hospital_id": "HOSPITAL-BANGKOK-01",
+    "demographics": {
+        "gender": "Male",
+        "age": 45,
+        "weight_kg": 75.0,
+        "height_cm": 175.0,
+        "underlying_diseases": [
+            "Hypertension"
+        ],
+        "behaviors": [
+            "Non-smoker",
+            "Regular exercise"
+        ],
+        "medical_history_summary": "No prior major cardiovascular events"
+    },
+    "vital_signs": {
+        "systolic": 120,
+        "diastolic": 80,
+        "preload": "Normal",
+        "afterload": "Normal",
+        "frank_starling_slope": 2.5,
+        "s1_s2_abnormalities_timing": "t=0.35s"
+    },
+    "zkp_proofs": {
+        "pi": "0x123456789abcdefzkpproofbytes",
+        "public_inputs": [
+            "valid_blood_pressure_range"
+        ]
+    },
+    "merkle_root": "0xabc123merkleverificationroot98765",
+    "ipfs_cid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+    "device_id": "STETHOSCOPE-IOT-99",
+    "device_signature": "sig_hex_9876543210abcdef"
+}
